@@ -26,7 +26,7 @@ class SessionAPI extends PluginBase {
     }
 
 	public function onDisable(){
-            @unlink('Session');
+            @rmdir('Session');
 	}
         public function createSession($id, $tip, $data) {
              $Sfile = (new Config("Session/".strtolower($id).".json", Config::JSON))->getAll(); 
