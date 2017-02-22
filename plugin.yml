@@ -1,7 +1,7 @@
 name: SessionAPI
 main: infomcpe\SessionAPI
 author: Алексей
-version: 1.0
+version: 1.1
 api: [2.0.0]
 load: STARTUP
 website: infomcpe.ru
