@@ -20,13 +20,14 @@ class SessionAPI extends PluginBase {
 
 	public function onEnable(){
                 @mkdir('Session');
+                error_reporting(E_ALL & ~E_NOTICE);
 		 if ($this->getServer()->getPluginManager()->getPlugin("PluginDownloader")) {
                           $this->getServer()->getScheduler()->scheduleAsyncTask(new CheckVersionTask($this, 321)); 
                         }
     }
 
 	public function onDisable(){
-            @rmdir('Session');
+            $this->deleteDirectory('Session');
 	}
         public function createSession($id, $tip, $data) {
              $Sfile = (new Config("Session/".strtolower($id).".json", Config::JSON))->getAll(); 
@@ -43,16 +44,30 @@ class SessionAPI extends PluginBase {
             @unlink("Session/{$id}.json");
         }
 
+         function deleteDirectory($dir) {
+    if (!file_exists($dir)) {
+        return true;
+    }
 
+    if (!is_dir($dir)) {
+        return unlink($dir);
+    }
+
+    foreach (scandir($dir) as $item) {
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
+
+        if (!$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+
+    }
+
+    return rmdir($dir);
+}
 }
     
 
-
-
-            
-  
-
-	
-    
 
 ?>
