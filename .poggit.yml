@@ -3,5 +3,5 @@ branches:
 - master
 projects:
   SesionAPI:
-    path: ""
+    icon: "321.png"
 ...
