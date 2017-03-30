@@ -1,5 +1,5 @@
 <?php
-namespace infomcpe;
+namespace infomcpe; 
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\Command;
@@ -19,29 +19,29 @@ class SessionAPI extends PluginBase {
 	}
 
 	public function onEnable(){
-                @mkdir('Session');
-                error_reporting(E_ALL & ~E_NOTICE);
+                @mkdir($this->getDataFolder());
+               
 		 if ($this->getServer()->getPluginManager()->getPlugin("PluginDownloader")) {
                           $this->getServer()->getScheduler()->scheduleAsyncTask(new CheckVersionTask($this, 321)); 
                         }
     }
 
 	public function onDisable(){
-            $this->deleteDirectory('Session');
+            $this->deleteDirectory($this->getDataFolder());
 	}
         public function createSession($id, $tip, $data) {
-             $Sfile = (new Config("Session/".strtolower($id).".json", Config::JSON))->getAll(); 
+             $Sfile = (new Config($this->getDataFolder().strtolower($id).".json", Config::JSON))->getAll(); 
              $Sfile[$tip] = $data; 
-            $Ffile = new Config("Session/".strtolower($id).".json", Config::JSON); 
+            $Ffile = new Config($this->getDataFolder().strtolower($id).".json", Config::JSON); 
             $Ffile->setAll($Sfile); 
             $Ffile->save(); 
 }
         public function getSessionData($id, $tip) {
-            $Sfile = (new Config("Session/".strtolower($id).".json", Config::JSON))->getAll(); 
-        return $Sfile[$tip]; 
+            $Sfile = (new Config($this->getDataFolder().strtolower($id).".json", Config::JSON))->getAll(); 
+        return @$Sfile[$tip]; 
         }
         public function deleteSession($id) {
-            @unlink("Session/{$id}.json");
+            @unlink($this->getDataFolder()."/{$id}.json");
         }
 
          function deleteDirectory($dir) {
@@ -68,6 +68,3 @@ class SessionAPI extends PluginBase {
 }
 }
     
-
-
-?>
